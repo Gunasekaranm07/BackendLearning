@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, String
+from sqlalchemy import create_engine, String, select
 from fastapi import FastAPI
 from sqlalchemy.orm import mapped_column, Mapped, DeclarativeBase, sessionmaker
 from pydantic import BaseModel
@@ -32,7 +32,10 @@ Base.metadata.create_all(bind=engine)
 print("Table created")
 
 with sessionLocal() as session:
-    student = Student(name="Santhosh M", age=24)
-    session.add(student)
-    session.commit()
-    print(f"Saved at id: {student.id}")
+    all_student = session.scalars(select(Student))
+    for student in all_student:
+        print(student.id, student.name, student.age)
+    first = session.scalars(select(Student).where(Student.age == 23)).first()
+    print(f"first student whose age is 23: {first}")
+    older = session.scalars(select(Student).where(Student.age>23)).all()
+    print(f"Count of students older than 23: {len(older)}")

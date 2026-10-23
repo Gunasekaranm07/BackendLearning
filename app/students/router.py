@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
-from app.students.repository import *
+from app.students.repository import (
+    get_students, get_student, create_student, update_student, delete_student
+)
 from app.students.schemas import StudentRes, StudentReq
 from app.core.database import get_db
 from sqlalchemy.orm import Session
@@ -22,7 +24,7 @@ def read_student_by_id(
     raise HTTPException(status_code=404, detail="Student not found")
 
 @router.post("/", status_code=201, response_model=StudentRes)
-def create_student_by_id(
+def create_student(
     req: StudentReq,
     db: Session = Depends(get_db)
 ):

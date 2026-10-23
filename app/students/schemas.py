@@ -8,3 +8,5 @@ class StudentRes(BaseModel):
     id: int
     name: str
     age: int
+
+    model_config = {'from_attributes': True}

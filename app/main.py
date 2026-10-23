@@ -32,7 +32,8 @@ Base.metadata.create_all(bind=engine)
 print("Table created")
 
 with sessionLocal() as session:
-    student = session.scalars(select(Student).where(Student.name=="Santhosh M")).first()
-    print(f"Before update: {student.age}")
-    student.age = 22
-    print(f"After update: {student.age}")
+    student = session.scalars(select(Student).where(Student.name=="Santhosh")).first()
+    if student is not None:
+        print(f"Before update: {student.age}")
+        student.age = 22
+        print(f"After update: {student.age}")

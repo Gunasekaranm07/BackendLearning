@@ -32,8 +32,10 @@ Base.metadata.create_all(bind=engine)
 print("Table created")
 
 with sessionLocal() as session:
-    student = session.scalars(select(Student).where(Student.name=="Santhosh")).first()
-    if student is not None:
-        print(f"Before update: {student.age}")
-        student.age = 22
-        print(f"After update: {student.age}")
+    student = session.scalars(select(Student).where(Student.id == 2)).first()
+    if student is None:
+        print("Record not found with that name")
+    else:
+        session.delete(student)
+        session.commit()
+        print(f"Deleted: {student.name}")

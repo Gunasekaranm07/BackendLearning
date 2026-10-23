@@ -32,10 +32,7 @@ Base.metadata.create_all(bind=engine)
 print("Table created")
 
 with sessionLocal() as session:
-    all_student = session.scalars(select(Student))
-    for student in all_student:
-        print(student.id, student.name, student.age)
-    first = session.scalars(select(Student).where(Student.age == 23)).first()
-    print(f"first student whose age is 23: {first}")
-    older = session.scalars(select(Student).where(Student.age>23)).all()
-    print(f"Count of students older than 23: {len(older)}")
+    student = session.scalars(select(Student).where(Student.name=="Santhosh M")).first()
+    print(f"Before update: {student.age}")
+    student.age = 22
+    print(f"After update: {student.age}")

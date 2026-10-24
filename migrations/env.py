@@ -12,6 +12,7 @@ config = context.config
 from app.core.config import settings
 from app.core.database import Base
 from app.students.models import Student, Course
+from app.users.models import User
 
 config.set_main_option("sqlalchemy.url", settings.database_url.replace("%", "%%"))
 # Interpret the config file for Python logging.

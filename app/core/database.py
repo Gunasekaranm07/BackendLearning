@@ -1,12 +1,13 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from app.core.config import settings
 
-database_url = settings.database_url
-echo = settings.echo_sql
-engine = create_engine(database_url, echo=echo)
+engine = create_engine(settings.database_url, echo=settings.echo_sql)
 
 SessionLocal = sessionmaker(bind=engine)
+
+class Base(DeclarativeBase):
+    pass
 
 def get_db():
     db = SessionLocal()
@@ -14,6 +15,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-class Base(DeclarativeBase):
-    pass

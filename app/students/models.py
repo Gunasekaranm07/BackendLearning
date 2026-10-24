@@ -1,6 +1,6 @@
-from app.core.database import Base
-from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String
+from sqlalchemy.orm import mapped_column, Mapped
+from app.core.database import Base
 
 class Student(Base):
     __tablename__ = "students"

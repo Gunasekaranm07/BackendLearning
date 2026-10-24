@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.core.database import engine, Base
+from app.core.database import Base, engine
 from app.students.models import Student
 from app.students.router import router as student_router
 

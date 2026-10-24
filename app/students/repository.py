@@ -46,3 +46,12 @@ def find_course(db: Session, student_id: int, title: str) -> (Course | None):
     return db.scalar(
         select(Course).where(student_id == Course.student_id, title == Course.title)
     )
+
+def get_student_by_course(db:Session, title: str) -> list[Student]:
+    stmt = (
+        select(Student)
+        .join(Student.courses)
+        .where(title == Course.title)
+    )
+
+    return list(db.scalars(stmt).all())

@@ -55,3 +55,12 @@ def get_student_by_course(db:Session, title: str) -> list[Student]:
     )
 
     return list(db.scalars(stmt).all())
+
+def get_student_pages(db: Session, limit: int, offset: int) -> list[Student]:
+    stmt = (
+        select(Student)
+        .order_by(Student.id)
+        .limit(limit)
+        .offset(offset)
+    )
+    return list(db.scalars(stmt).all())

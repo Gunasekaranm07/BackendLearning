@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.students.schemas import (
@@ -6,7 +6,7 @@ from app.students.schemas import (
 )
 from app.students.repository import (
     get_student, get_students, create_student, update_student, delete_student, create_course, 
-    get_student_by_course
+    get_student_by_course, get_student_pages
 )
 from app.students.exceptions import StudentNotFound, DuplicateCourse
 from app.students.service import add_course
@@ -14,8 +14,12 @@ from app.students.service import add_course
 router = APIRouter(prefix="/api/v1/students", tags=["Students"])
 
 @router.get("/", status_code=200, response_model=list[StudentRes])
-def read_students(db:Session = Depends(get_db)):
-    return get_students(db)
+def read_students(
+    limit: int = Query(10, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+    db:Session = Depends(get_db),
+):
+    return get_student_pages(db, limit, offset)
 
 @router.post("/", status_code=201, response_model=StudentRes)
 def insert_student(req: StudentReq, db:Session = Depends(get_db)):

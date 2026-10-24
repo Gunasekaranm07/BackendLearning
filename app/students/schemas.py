@@ -10,3 +10,21 @@ class StudentRes(BaseModel):
     age: int
 
     model_config = {'from_attributes': True}
+
+class CourseReq(BaseModel):
+    title: str
+
+class CourseRes(BaseModel):
+    id: int
+    title: str
+    student_id: int
+
+    model_config = {"from_attributes": True}
+
+class StudentWithCourse(BaseModel):
+    id: int
+    name: str
+    age: int
+    courses: list[CourseRes]
+
+    model_config={'from_attributes': True}

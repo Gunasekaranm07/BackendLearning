@@ -1,6 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from app.students.models import Student
+from app.students.models import Student, Course
 
 def get_students(db: Session) -> list[Student]:
     students = db.scalars(select(Student)).all()
@@ -34,3 +34,15 @@ def delete_student(db: Session, student_id: int) -> bool:
     db.delete(student)
     db.commit()
     return True
+
+def create_course(db: Session, student_id: int, title: str) -> Course:
+    course = Course(title=title, student_id=student_id)
+    db.add(course)
+    db.commit()
+    db.refresh(course)
+    return course
+
+def find_course(db: Session, student_id: int, title: str) -> (Course | None):
+    return db.scalar(
+        select(Course).where(student_id == Course.student_id, title == Course.title)
+    )

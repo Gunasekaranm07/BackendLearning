@@ -1,4 +1,4 @@
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from app.core.database import Base
 
@@ -12,6 +12,7 @@ class Student(Base):
 
 class Course(Base):
     __tablename__ = "courses"
+    __table_args__ = (UniqueConstraint("student_id", "title", name="uq_student_course"),)
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(50))
     student_id : Mapped[int] = mapped_column(ForeignKey("students.id"))

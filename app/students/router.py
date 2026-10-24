@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
+from typing import Literal
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.students.schemas import (
@@ -17,9 +18,11 @@ router = APIRouter(prefix="/api/v1/students", tags=["Students"])
 def read_students(
     limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
+    sort: Literal["id", "name", "age"] = "id",
+    order:Literal["asc", "desc"] = "asc",
     db:Session = Depends(get_db),
 ):
-    return get_student_pages(db, limit, offset)
+    return get_student_pages(db, limit, offset, sort, order)
 
 @router.post("/", status_code=201, response_model=StudentRes)
 def insert_student(req: StudentReq, db:Session = Depends(get_db)):

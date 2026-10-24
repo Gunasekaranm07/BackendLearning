@@ -56,10 +56,16 @@ def get_student_by_course(db:Session, title: str) -> list[Student]:
 
     return list(db.scalars(stmt).all())
 
-def get_student_pages(db: Session, limit: int, offset: int) -> list[Student]:
+def get_student_pages(db: Session, limit: int, offset: int, sort, order) -> list[Student]:
+    SORT_COLUMNS = {"id": Student.id, "name": Student.name, "age": Student.age}
+    column = SORT_COLUMNS.get(sort, Student.id)
+    if order == "asc":
+        column = column.asc()
+    else:
+        column = column.desc()
     stmt = (
         select(Student)
-        .order_by(Student.id)
+        .order_by(column, Student.id)
         .limit(limit)
         .offset(offset)
     )

@@ -15,3 +15,6 @@ def get_user_by_email(db:Session, email:str) -> User | None:
         return None
     else:
         return user
+
+def get_user_by_id(db:Session, id: int) -> User | None:
+    return db.scalar(select(User).where(id == User.id))

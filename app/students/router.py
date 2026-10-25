@@ -11,8 +11,9 @@ from app.students.repository import (
 )
 from app.students.exceptions import StudentNotFound, DuplicateCourse
 from app.students.service import add_course
+from app.users.dependencies import get_current_user
 
-router = APIRouter(prefix="/api/v1/students", tags=["Students"])
+router = APIRouter(prefix="/api/v1/students", tags=["Students"], dependencies=[Depends(get_current_user)])
 
 @router.get("/", status_code=200, response_model=list[StudentRes])
 def read_students(

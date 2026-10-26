@@ -1,5 +1,8 @@
-class EmailAlreadyExist(Exception):
-    pass
+from app.core.exceptions import AppError
+class EmailAlreadyExist(AppError):
+    status_code = 409
+    detail = "Email already registered"
 
-class InvalidCredentials(Exception):
-    pass
+class InvalidCredentials(AppError):
+    status_code = 401
+    detail = "Invalid Credentials"

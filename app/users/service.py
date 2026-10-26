@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 def register_user(db:Session, email:str, password: str):
     hashed_password = hash_password(password)
     if get_user_by_email(db, email) is not None:
-        logging.error("Email already exist")
+        logger.error("Email already exist")
         raise EmailAlreadyExist()
     user = create_user(db, email.strip().lower(), hashed_password)
     return user

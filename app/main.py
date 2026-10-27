@@ -3,12 +3,9 @@ from app.users.router import router as user_router
 from app.students.router import router as student_router
 from fastapi.responses import JSONResponse
 from app.core.exceptions import AppError
-import logging
+from app.core.logging import setup_log
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s %(message)s"
-)
+setup_log()
 
 app = FastAPI()
 

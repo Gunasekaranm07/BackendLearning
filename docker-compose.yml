@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: student_db
+      MYSQL_USER: student
+      MYSQL_PASSWORD: studentpass
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./migrations:/code/migrations
+    environment:
+      DATABASE_URL: mysql+pymysql://student:studentpass@db:3306/student_db
+      SECRET_KEY: change-me-to-a-long-random-string
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
